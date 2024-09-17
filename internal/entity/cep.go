@@ -1,6 +1,9 @@
 package entity
 
-import "regexp"
+import (
+	"regexp"
+	"strings"
+)
 
 type (
 	CEP string
@@ -13,5 +16,6 @@ func (c CEP) IsValid() bool {
 
 func (c CEP) GetDigits() string {
 	re := regexp.MustCompile(`\d+`)
-	return re.FindString(string(c))
+	matches := re.FindAllString(string(c), -1)
+	return strings.Join(matches, "")
 }

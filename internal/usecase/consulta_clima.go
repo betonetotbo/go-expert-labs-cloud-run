@@ -1,4 +1,4 @@
-package usercase
+package usecase
 
 import (
 	"fmt"
@@ -40,7 +40,7 @@ func (c *ConsultaClima) Execute(input *ConsultaClimaInputDTO) (*ConsultaClimaOut
 		return nil, err
 	}
 
-	wr, err := c.weather.ConsultaClima(fmt.Sprintf("%s, %s, Brasil", cc.Localidade, cc.Estado)
+	wr, err := c.weather.ConsultaClima(fmt.Sprintf("%s, %s, Brasil", cc.Localidade, cc.Estado))
 	if err != nil {
 		return nil, err
 	}
