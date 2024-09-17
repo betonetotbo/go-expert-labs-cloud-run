@@ -1,0 +1,24 @@
+# Listagem de orders
+GET http://localhost:8080/rest/order
+
+###
+
+# Criação de Order
+POST http://localhost:8080/rest/order
+Content-Type: application/json
+
+{
+  "price": 10.5,
+  "tax": 1.25
+}
+
+###
+
+# Criação de Order com erro
+POST http://localhost:8080/rest/order
+Content-Type: application/json
+
+{
+"price": 0,
+"tax": 1.25
+}
