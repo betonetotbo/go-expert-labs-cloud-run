@@ -41,4 +41,12 @@ Para testar, você pode:
 
 ## Google Cloud Run
 
-*pedding*
+Existe uma versão de testes rodando na GCP Cloud Run em:
+
+https://consulta-clima-867826340884.us-central1.run.app/
+
+Para testar:
+
+```bash
+curl https://consulta-clima-867826340884.us-central1.run.app/?cep=01001-000 
+```
