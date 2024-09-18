@@ -42,7 +42,7 @@ func Test_ConsultaClima(t *testing.T) {
 		Localidade: "localidade",
 		Uf:         "uf",
 	}, nil)
-	weather.On("ConsultaClima", "localidade, uf, Brasil").Once().Return(&service.WeatherAPIResult{
+	weather.On("ConsultaClima", "localidade,uf,Brasil").Once().Return(&service.WeatherAPIResult{
 		Current: service.WeatherCurrent{
 			TempC: 1.12,
 			TempF: 3.45,
