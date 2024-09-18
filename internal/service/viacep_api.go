@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/betonetotbo/go-expert-labs-cloud-run/internal/entity"
+	"github.com/betonetotbo/go-expert-labs-cloud-run/internal/utils"
 	"net/http"
 )
 
@@ -28,15 +29,17 @@ type (
 		ConsultaCep(cep entity.CEP) (*ViacepResponse, error)
 	}
 
-	viacepApi struct{}
+	viacepApi struct {
+		baseUrl string
+	}
 )
 
 func NewViacepApi() ViacepApi {
-	return &viacepApi{}
+	return &viacepApi{baseUrl: "https://viacep.com.br"}
 }
 
 func (v *viacepApi) ConsultaCep(cep entity.CEP) (*ViacepResponse, error) {
-	req, _ := http.NewRequest(http.MethodGet, fmt.Sprintf("https://viacep.com.br/ws/%s/json/", cep.GetDigits()), nil)
+	req, _ := http.NewRequest(http.MethodGet, fmt.Sprintf("%s/ws/%s/json/", v.baseUrl, cep.GetDigits()), nil)
 	resp, e := http.DefaultClient.Do(req)
 	if e != nil {
 		return nil, e
@@ -44,7 +47,7 @@ func (v *viacepApi) ConsultaCep(cep entity.CEP) (*ViacepResponse, error) {
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
-		return nil, fmt.Errorf("status code %d", resp.StatusCode)
+		return nil, utils.NewHttpError(resp.StatusCode)
 	}
 
 	var respObj ViacepResponse
@@ -52,5 +55,10 @@ func (v *viacepApi) ConsultaCep(cep entity.CEP) (*ViacepResponse, error) {
 	if e != nil {
 		return nil, e
 	}
+
+	if respObj.Uf == "" {
+		return nil, utils.NewHttpError(http.StatusNotFound)
+	}
+
 	return &respObj, nil
 }

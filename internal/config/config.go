@@ -17,6 +17,7 @@ func Load() (*Config, error) {
 	viper.AutomaticEnv()
 
 	viper.SetDefault("PORT", 8080)
+	viper.SetDefault("WEATHER_API_KEY", nil)
 
 	err := viper.ReadInConfig()
 	if err != nil {

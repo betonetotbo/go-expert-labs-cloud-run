@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"github.com/betonetotbo/go-expert-labs-cloud-run/internal/entity"
 	"github.com/betonetotbo/go-expert-labs-cloud-run/internal/service"
+	"github.com/betonetotbo/go-expert-labs-cloud-run/internal/utils"
+	"log"
 )
 
 type (
@@ -35,12 +37,16 @@ func (c *ConsultaClima) Execute(input *ConsultaClimaInputDTO) (*ConsultaClimaOut
 		return nil, fmt.Errorf("cep is not valid: %s", input.Cep)
 	}
 
+	log.Printf("Consultando CEP: %s", input.Cep)
 	cc, err := c.viacep.ConsultaCep(input.Cep)
 	if err != nil {
 		return nil, err
 	}
+	log.Printf("CEP encontrado: %+v", cc)
 
-	wr, err := c.weather.ConsultaClima(fmt.Sprintf("%s, %s, Brasil", cc.Localidade, cc.Estado))
+	q := utils.ConcatFields(cc.Logradouro, cc.Bairro, cc.Localidade, cc.Uf, "Brasil")
+	log.Printf("Consulta clima para: %s", q)
+	wr, err := c.weather.ConsultaClima(q)
 	if err != nil {
 		return nil, err
 	}

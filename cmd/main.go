@@ -7,6 +7,7 @@ import (
 	"github.com/betonetotbo/go-expert-labs-cloud-run/internal/entity"
 	"github.com/betonetotbo/go-expert-labs-cloud-run/internal/service"
 	"github.com/betonetotbo/go-expert-labs-cloud-run/internal/usecase"
+	"github.com/betonetotbo/go-expert-labs-cloud-run/internal/utils"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 	"log"
@@ -31,7 +32,7 @@ func main() {
 			Cep: entity.CEP(cep),
 		})
 		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
+			http.Error(w, err.Error(), utils.GetHttpErrorCode(err))
 		} else {
 			_ = json.NewEncoder(w).Encode(output)
 		}

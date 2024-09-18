@@ -1,0 +1,10 @@
+services:
+  consulta-clima:
+    build:
+      context: ..
+      dockerfile: build/Dockerfile
+    environment:
+      PORT: 8080
+      WEATHER_API_KEY: "<INFORME SUA API KEY AQUI>"
+    ports:
+      - 8080:8080
